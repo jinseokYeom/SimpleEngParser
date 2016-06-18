@@ -1,2 +1,2 @@
-# SimpleEngParser
+# Syntask
 Simple English Syntax Parser
