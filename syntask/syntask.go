@@ -1,6 +1,5 @@
 /*
-
-Copyright (c) 2016 Jinseok Yeom, Jae-Il Yeom
+Copyright (c) 2016 Jae-Il Yeom, Jinseok Yeom
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
@@ -19,45 +18,42 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-   Welcome to Syntask!
-
-   Example usage:
-
-       For plain view,
-
-           $ syntask The students are interesting.
-           S(NP(D("The")N("students"))VP(V("are")AP(A("interesting"))))
-
-       For tree view,
-
-       $ syntask -t The Students are interesting.
-
-           S
-           NP           VP
-           D   N        V   AP
-                        A
-           |   |        |   |
-           The students are interesting.
-
-       For this program to work, dict.synt is required.
-
-           dict.synt format:
-
-           [word 1] [syntactic atom 1]
-           [word 2] [syntactic atom 2]
-           [word 3] [syntactic atom 3]
-           ...
-
 */
 
 package main
 
 import (
-	"errors"
+	"bufio"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
+
+/*
+   Welcome to Syntask!
+
+   Example usage:
+
+       $ syntask The students are interesting.
+       S(NP(D("The")N("students"))VP(V("are")AP(A("interesting"))))
+
+       For this program to work, synt_dict and synt_rule
+       fles are required.
+
+           - synt_dict format
+
+           [word 1]: [syntactic atom 1]
+           [word 2]: [syntactic atom 2]
+           [word 3]: [syntactic atom 3]
+           ...
+
+           - synt_rule format
+
+           [parent 1] - [child 1] [child 2] ...
+           [parent 2] - [child 1] [child 2] ...
+           ...
+*/
 
 // syntactic atoms
 const (
@@ -75,25 +71,47 @@ const (
 
 // help
 func help() {
-
+	fmt.Printf("\n")
+	fmt.Printf("SYNTASK\n")
+	fmt.Printf("Example usage:\n")
+	fmt.Printf("  syntask [ENGLISH SENTENCE]\n")
+	fmt.Printf("  syntask -t [ENGLISH SENTENCE]\n")
+	fmt.Printf("\n")
 }
 
-// load dictionary
+// load dictionary in upper case
 func loadDictionary() (map[string]string, error) {
-	f, err := os.Open("dict.synt")
+	f, err := os.Open("synt_dict")
 	defer f.Close()
 	if err != nil {
 		return nil, err
 	}
-
 	dict := make(map[string]string)
 	fs := bufio.NewScanner(f)
 	for fs.Scan() {
 		line := fs.Text()
-		dict[line[0]] = line[1]
+		tokens := strings.Split(line, ": ")
+		if len(tokens) == 2 {
+			word := strings.ToUpper(tokens[0])
+			satom := strings.ToUpper(tokens[1])
+			dict[word] = satom
+		}
 	}
+	return dict, nil
+}
 
-	return dict
+// load syntactical rule
+func loadRule() ([][]string, error) {
+	f, err := os.Open("synt_rule")
+	defer f.Close()
+	if err != nil {
+		return nil, err
+	}
+	fs := bufio.NewScanner(f)
+	for fs.Scan() {
+
+	}
+	return rule
 }
 
 func main() {
