@@ -1,0 +1,7 @@
+S - NP VP
+NP - (D) (AP) N
+VP - V
+VP - V (NP) (PP)
+VP - V NP {PP NP VP AP}
+PP - P NP
+AP - A

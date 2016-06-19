@@ -25,7 +25,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 )
@@ -100,32 +99,10 @@ func loadDictionary() (map[string]string, error) {
 	return dict, nil
 }
 
-// load syntactical rule
-func loadRule() ([][]string, error) {
-	f, err := os.Open("synt_rule")
-	defer f.Close()
-	if err != nil {
-		return nil, err
-	}
-	fs := bufio.NewScanner(f)
-	for fs.Scan() {
-
-	}
-	return rule
-}
-
 func main() {
 	if len(os.Args) < 2 {
 		help()
 		os.Exit(1)
 	}
-
-	dict, err := loadDictionary()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// slice of words
-	sentence := os.Args[1:]
 
 }
