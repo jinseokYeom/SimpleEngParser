@@ -32,7 +32,7 @@ type Stack struct {
 }
 
 // make a new stack given the first value
-func New(v interface{}) *Stack {
+func New() *Stack {
 	// root doesn't have a value
 	n := NewNode(nil)
 	return &Stack{
