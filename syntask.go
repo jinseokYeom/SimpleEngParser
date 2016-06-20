@@ -29,31 +29,6 @@ import (
 	"strings"
 )
 
-/*
-   Welcome to Syntask!
-
-   Example usage:
-
-       $ syntask The students are interesting.
-       S(NP(D("The")N("students"))VP(V("are")AP(A("interesting"))))
-
-       For this program to work, synt_dict and synt_rule
-       fles are required.
-
-           - synt_dict format
-
-           [word 1]: [syntactic atom 1]
-           [word 2]: [syntactic atom 2]
-           [word 3]: [syntactic atom 3]
-           ...
-
-           - synt_rule format
-
-           [parent 1] - [child 1] [child 2] ...
-           [parent 2] - [child 1] [child 2] ...
-           ...
-*/
-
 // syntactic atoms
 const (
 	S  = "S"  // Sentence
@@ -76,27 +51,6 @@ func help() {
 	fmt.Printf("  syntask [ENGLISH SENTENCE]\n")
 	fmt.Printf("  syntask -t [ENGLISH SENTENCE]\n")
 	fmt.Printf("\n")
-}
-
-// load dictionary in upper case
-func loadDictionary() (map[string]string, error) {
-	f, err := os.Open("synt_dict")
-	defer f.Close()
-	if err != nil {
-		return nil, err
-	}
-	dict := make(map[string]string)
-	fs := bufio.NewScanner(f)
-	for fs.Scan() {
-		line := fs.Text()
-		tokens := strings.Split(line, ": ")
-		if len(tokens) == 2 {
-			word := strings.ToUpper(tokens[0])
-			satom := strings.ToUpper(tokens[1])
-			dict[word] = satom
-		}
-	}
-	return dict, nil
 }
 
 func main() {
